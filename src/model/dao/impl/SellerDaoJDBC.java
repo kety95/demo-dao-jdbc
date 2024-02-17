@@ -12,6 +12,8 @@ import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import model.dao.DaoFactory;
+import model.dao.DepartmentDao;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -212,7 +214,8 @@ public class SellerDaoJDBC implements SellerDao{
 			while(rs.next()) {
 				Department dep = map.get(rs.getInt("DepartmentId"));
 				if(dep == null) {
-					dep = instantiateDepartment(rs);
+					DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+					dep = departmentDao.instantiateDepartment(rs);
 					map.put(rs.getInt("DepartmentId"), dep);
 				}
 				Seller obj = instantiateSeller(rs, dep);
